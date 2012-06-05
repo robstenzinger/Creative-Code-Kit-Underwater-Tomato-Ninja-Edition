@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>Background Music Using HTML5 Audio</title>
+
+<script>
+function init() {
+
+	var SPACE = 32;
+	var background_sound = document.getElementById("background-audio-main");
+	var playing = false;
+	document.onkeydown = function(e) {
+		if (e.keyCode === SPACE) {
+
+			if(playing){
+				background_sound.pause();
+				playing = false;
+			}else{
+				background_sound.play();
+				playing = true;				
+			}
+
+		}
+	}
+}
+</script>
+
+</head>
+<body onload="init();">
+
+	<p>Press the spacebar to play or pause the background music.</p>
+
+	<audio controls id="background-audio-main">
+		<source src="sound/background/song1.mp3"/>
+	</audio>
+
+</body>
+</html>

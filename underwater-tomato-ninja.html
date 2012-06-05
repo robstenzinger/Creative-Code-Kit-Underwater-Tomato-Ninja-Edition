@@ -1,0 +1,1287 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<meta charset="utf-8">
+<!-- 
+
+// HTML5 Game Starter Kit
+By Rob Stenzinger and others as noted
+
+
+Image Files and Music Files are provided under Creative Commons
+Copyright (C) 2012 Rob Stenzinger
+Attribution-NonCommercial-ShareAlike 3.0 United States (CC BY-NC-SA 3.0)
+http://creativecommons.org/licenses/by-nc-sa/3.0/us/
+
+
+Code (HTML, CSS, JavaScript) is provided under the MIT License
+http://www.opensource.org/licenses/mit-license.php
+Copyright (C) 2012 Rob Stenzinger
+
+Permission is hereby granted, free of charge, to any person obtaining a 
+copy of this software and associated documentation files (the "Software"), 
+to deal in the Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+and/or sell copies of the Software, and to permit persons to whom the 
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in 
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ -->
+
+<head>
+	<title>Game - Jump to Goal</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<style type="text/css">
+		body {
+			background-color: #000000;
+			margin: 0px;
+			overflow: hidden;
+			width : 100%;
+            /*need this otherwise container will hijack all clicks/touches!*/
+			-webkit-transform: translateZ(-1000px);
+			-webkit-transform-style: preserve-3d; 
+		}
+		
+		.ground {
+			position : absolute;
+			display : block; 
+			background-color:#fff;
+		   opacity:.5;
+		}
+				
+		.container {			
+			position : absolute; 
+			display : block; 
+			-webkit-transform-style: preserve-3d;
+			-webkit-transform : translateZ(0px);
+			overflow : hidden;
+			pointer-events :none;
+		}
+
+/*		.screen {
+			position: absolute;
+			margin: auto;
+			width: 640px;
+			height:480px;
+
+			color: #eae2e2;
+			font-weight: bold;
+			font-variant: small-caps;
+			font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+		}*/
+
+		#screen-game-over{
+			background-color: rgba(185, 49, 49, 0.48);	
+		}
+
+		#screen-about{
+			background-color: rgba(120, 49, 185, 0.48);		
+		}
+
+		#screen-pause{
+			background-color: rgba(244, 238, 238, 0.47);
+		}
+
+		#screen-title{
+			background-color: rgba(49, 108, 185, 0.48);	
+		}
+		
+		#button-start{
+			left: 50%;
+			right: 50%;
+			width: 300px;	
+		}
+		#button-restart{
+			left: 50%;
+			right: 50%;
+			width: 300px;	
+		}
+		#button-unpause{
+			left: 50%;
+			right: 50%;
+			width: 300px;	
+		}
+
+		.student-score{
+			font-weight:bold;
+			text-shadow: 0 0 2px #ffffff;
+			font-size: 1.5em;
+		}
+
+		.game-sound{
+			position: absolute;
+			top:-1000px;
+			left:-1000px;
+		}
+
+
+.screen {
+	position: absolute;
+	margin: auto;
+	width: 640px;
+	height:480px;
+
+	color: #eae2e2;
+	font-weight: bold;
+	font-variant: small-caps;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	
+	display: block;
+	visibility: visible;
+		
+}
+
+button:hover{
+	background-color: #000000;
+	color: #ffffff;
+}
+
+.screen ul li{
+	list-style:none;
+	margin-left:0px;
+}
+
+.screen ul{
+	margin-left: 0px;
+	padding-left: 10px;
+	float: left;
+	width: 160px;
+}
+
+.screen button{
+	border-style: solid;
+	font-weight: bold;
+	font-variant: small-caps;
+	color: #feeeee;
+	background-color: #861b1b;
+	border-color: #fae7e7;
+	position:absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.game-label{
+	color: #eae2e2;
+	font-weight: bold;
+	font-variant: small-caps;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	position:absolute;
+}
+
+#progress{
+	left: 300px;
+	top: 150px;
+}
+
+#score{
+	left: 800px;
+	top: 150px;	
+}
+
+
+/* ============================================================================================================================
+== BUBBLE WITH A RIGHT-ANGLED TRIANGLE
+** ============================================================================================================================ */
+
+/* THE SPEECH BUBBLE
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.triangle-right {
+	position:relative;
+	padding:15px;
+	margin:1em 0 3em;
+	color:#fff;
+	background:#075698; /* default background for browsers without gradient support */
+	/* css3 */
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
+	background:-moz-linear-gradient(#2e88c4, #075698);
+	background:-o-linear-gradient(#2e88c4, #075698);
+	background:linear-gradient(#2e88c4, #075698);
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	border-radius:10px;
+}
+
+/* Variant : for top positioned triangle
+------------------------------------------ */
+
+.triangle-right.top {
+	background:-webkit-gradient(linear, 0 0, 0 100%, from(#075698), to(#2e88c4));
+	background:-moz-linear-gradient(#075698, #2e88c4);
+	background:-o-linear-gradient(#075698, #2e88c4);
+	background:linear-gradient(#075698, #2e88c4);
+}
+
+/* Variant : for left positioned triangle
+------------------------------------------ */
+
+.triangle-right.left {
+	margin-left:40px;
+	background:#075698;
+}
+
+/* Variant : for right positioned triangle
+------------------------------------------ */
+
+.triangle-right.right {
+	margin-right:40px;
+	background:#075698;
+}
+
+/* THE TRIANGLE
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.triangle-right:after {
+	content:"";
+	position:absolute;
+	bottom:-20px; /* value = - border-top-width - border-bottom-width */
+	left:50px; /* controls horizontal position */
+	border-width:20px 0 0 20px; /* vary these values to change the angle of the vertex */
+	border-style:solid;
+	border-color:#075698 transparent; 
+    /* reduce the damage in FF3.0 */
+    display:block; 
+    width:0;
+}
+
+/* Variant : top
+------------------------------------------ */
+
+.triangle-right.top:after {
+	top:-20px; /* value = - border-top-width - border-bottom-width */
+	right:50px; /* controls horizontal position */
+	bottom:auto;
+	left:auto;
+	border-width:20px 20px 0 0; /* vary these values to change the angle of the vertex */
+	border-color:transparent #075698; 
+}
+
+/* Variant : left
+------------------------------------------ */
+
+.triangle-right.left:after {
+	top:16px; 
+	left:-40px; /* value = - border-left-width - border-right-width */
+	bottom:auto;
+	border-width:15px 40px 0 0; /* vary these values to change the angle of the vertex */
+	border-color:transparent #075698; 
+}
+
+/* Variant : right
+------------------------------------------ */
+
+.triangle-right.right:after {
+	top:16px; 
+	right:-40px; /* value = - border-left-width - border-right-width */
+	bottom:auto;
+    left:auto;
+	border-width:15px 0 0 40px; /* vary these values to change the angle of the vertex */
+	border-color:transparent #075698 ; 
+}
+
+
+
+	</style>
+	
+
+</head>
+
+
+
+<body onload="init();">
+
+	<script src="js/game-starter-kit.js"></script>	
+
+
+	<script>
+		var fg1;
+		var fg2;
+		var bg1;
+		var bg2;
+
+		var targetFramesPerSecond = 30;
+		var currentLoopTime;
+		var previousLoopTime;
+		var FPS;
+		var previousBaddieTime = -1;
+
+		var maxNPCs = 10;
+		var activeNPCList = [];
+		var spareNPCList = [];
+	
+		function init() {
+		    prepareCSSPrefix();
+
+			initMouseListeners(); 
+			initKeyboardListeners();
+
+			// create the background
+			makeParallax();
+
+			// create the ground
+			makeGround();	
+
+			// create the player avatar
+			makeAvatar();
+
+			// prepare the score display
+			prepareScore();
+			score();
+
+			// prepare the progress display
+			prepareProgress();
+			progress(0);
+
+			// prepare the health display
+			prepareHealth();
+			health();
+
+
+			// prepare the helper game screens
+			prepareScreenTitle();
+			prepareScreenAbout();
+			prepareScreenGameOver();
+			prepareScreenPause();
+
+			// game status
+			gamePaused = false;
+			gameOver = false;
+			levelOver = false;
+			gameStarted = false;
+
+			//make sure there's no baddies already
+			removeAllBaddies();
+
+			// show the game start/title screen
+			showScreenTitle();
+
+			// start game loop ---------------------------------
+			//
+			// a standard recurring timer
+			// setInterval(loop, 1000 / targetFramesPerSecond);
+			// 
+			// a better timer pattern, new emerging standard, though it does't recur, need to call it in the looping function... you'll see this function call again in "loop()"
+			requestAnimationFrame(loop);
+		}
+
+		// ------ heads-up-display / game labels -------			
+
+		function prepareScore(){
+			var e = document.getElementById("score-group");
+			e.style.position = "absolute"; 
+			e.style.bottom = "10px";
+			e.style.right = "10px";
+			e.style.visibility = "hidden";
+			container.appendChild(e);
+		}
+
+		function prepareProgress(){
+			var e = document.getElementById("progress-group");
+			e.style.position = "absolute"; 
+			e.style.bottom = "10px";
+			e.style.left = "10px";
+			e.style.visibility = "hidden";
+			container.appendChild(e);
+		}
+
+		function prepareHealth(){
+			//record the full health value
+			healthTotalValue = avatar.health;
+
+			var e = document.getElementById("health-group");
+			e.style.position = "absolute"; 
+			e.style.top = "10px";
+			e.style.left = "10px";
+			e.style.visibility = "hidden";
+			container.appendChild(e);
+		}
+
+		// ------ screens -------
+
+
+		function prepareScreenGameOver(){
+			var e = document.getElementById("screen-game-over");
+			e.style.position = "absolute"; 
+			e.style.top = "0px";
+			e.style.left = "0px";
+			// e.style.visibility = "hidden";
+			e.style.display = "none";
+			// container.appendChild(e);
+		}
+
+		function prepareScreenTitle(){
+			var e = document.getElementById("screen-title");
+			e.style.position = "absolute"; 
+			e.style.top = "0px";
+			e.style.left = "0px";
+			// e.style.visibility = "hidden";
+			e.style.display = "none";
+			// container.appendChild(e);
+		}
+
+		function prepareScreenPause(){
+			var e = document.getElementById("screen-pause");
+			e.style.position = "absolute"; 
+			e.style.top = "0px";
+			e.style.left = "0px";
+			// e.style.visibility = "hidden";
+			e.style.display = "none";
+			// container.appendChild(e);
+		}
+
+		function prepareScreenAbout(){
+			var e = document.getElementById("screen-about");
+			e.style.position = "absolute"; 
+			e.style.top = "0px";
+			e.style.left = "0px";
+			// e.style.visibility = "hidden";
+			e.style.display = "none";
+			// container.appendChild(e);
+		}
+
+		// ------ background -------
+
+
+		function makeParallax(){
+			bg1 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
+			bg2 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
+
+			fg1 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+			fg2 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+		}
+
+		function makeGround(){
+			ground.className = "ground"; 
+			ground.id = "ground"; 
+			ground.style.width = SCREEN_WIDTH +"px"; 
+			ground.style.height = "100px"; 
+			ground.style.top = "0px"; 
+			ground.style.left = "0px"; 
+			ground.style.backgroundColor = "#666"; 
+			
+			//to get accurate readings of dom element positions, they need to pass through this approach: 3d CSS transforms
+			//todo: come up with a way where that can be flexible.
+			ground.style.webkitTransform = "translate3d("+ 0 +"px, " + (gameHeight-100) +"px, "+ 0 +"px)"; 
+			//document.body.appendChild(ground);
+			container.appendChild(ground);
+		}
+
+		function showScreenTitle(){
+			gameStarted = false;	
+
+			hideGameScreens();
+			hideHUD();
+			activeScreen = SCREEN_TITLE;
+
+			// remove baddies from start screen
+			removeAllBaddies();
+
+			// show the screen
+			var e = document.getElementById("screen-title");
+			e.style.display = "block";
+			e.style.visibility = "visible";
+			e.style.top = container.style.top;
+			e.style.left = container.style.left;
+
+			stopSound("background-audio-main");
+			loopSound("background-audio-alternate");
+		}
+
+		function loopSound(elementId){
+			var background_sound = document.getElementById(elementId);
+			background_sound.play();
+			background_sound.addEventListener('ended', function(){
+				this.currentTime = 0;
+				this.play();
+			}, false);
+		}
+
+		function playSound(elementId){
+			var background_sound = document.getElementById(elementId);
+			background_sound.play();
+			background_sound.addEventListener('ended', function(){
+				this.currentTime = 0;
+			}, false);
+		}		
+
+		function stopSound(elementId){
+			var background_sound = document.getElementById(elementId);
+			background_sound.pause();			
+			background_sound.currentTime = 0;			
+		}
+
+		function showScreenPause(){
+			gameStarted = true;	
+			gamePaused = true;
+
+			hideGameScreens();
+			hideHUD();
+			activeScreen = SCREEN_PAUSE;
+
+			// show the screen
+			var e = document.getElementById("screen-pause");
+			e.style.display = "block";
+			e.style.visibility = "visible";
+			e.style.top = container.style.top;
+			e.style.left = container.style.left;				
+		}			
+
+		function showScreenAbout(){
+			gameStarted = false;	
+			gamePaused = false;
+
+			hideGameScreens();
+			hideHUD();
+			activeScreen = SCREEN_ABOUT;
+
+			// show the screen
+			var e = document.getElementById("screen-about");
+			e.style.display = "block";
+			e.style.visibility = "visible";
+			e.style.top = container.style.top;
+			e.style.left = container.style.left;
+
+			showStudentsAndPoints();
+		}
+
+		function showScreenGameOver(){
+			gameStarted = true;	
+			gamePaused = false;
+			gameOver = true;
+
+			hideGameScreens();
+			hideHUD();
+			activeScreen = SCREEN_GAME_OVER;
+
+			// show the screen
+			var e = document.getElementById("screen-game-over");
+			e.style.display = "block";
+			e.style.visibility = "visible";
+			e.style.top = container.style.top;
+			e.style.left = container.style.left;
+		}
+
+
+		function showHUD(){
+			var e = document.getElementById("score-group");
+			e.style.display = "block";
+			e.style.visibility = "visible";
+
+			e = document.getElementById("health-group");
+			e.style.display = "block";
+			e.style.visibility = "visible";
+
+			e = document.getElementById("progress-group");
+			e.style.display = "block";
+			e.style.visibility = "visible";
+		}
+
+		function hideHUD(){
+			var e = document.getElementById("score-group");
+			e.style.display = "none";
+			e.style.visibility = "hidden";
+
+			e = document.getElementById("health-group");
+			e.style.display = "none";
+			e.style.visibility = "hidden";
+
+			e = document.getElementById("progress-group");
+			e.style.display = "none";
+			e.style.visibility = "hidden";
+		}
+
+		function startGame(){
+			gameStarted = true;
+			gamePaused = false;
+			gameOver = false;
+
+			// reset avatar
+			avatar.stand();
+			avatar.health = 100;
+
+			// reset score and progress
+			scoreValue = 0;
+			progressValue = 0;
+
+			// clear the screen of baddies
+			removeAllBaddies();
+
+			showHUD();
+			hideGameScreens();
+			activeScreen = SCREEN_GAME;
+
+			loopSound("background-audio-main");
+			stopSound("background-audio-alternate");
+
+		}
+
+		function pauseGame(){
+			gamePaused = true;
+			showScreenPause();
+		}
+
+		function quitGame(){
+			removeAllBaddies();
+			gameStarted = false;
+			gamePaused = false;
+			gameOver = false;
+			showScreenTitle();
+		}
+
+		function unPauseGame(){
+			gamePaused = false;
+			hideGameScreens();
+			showHUD();
+		}
+
+		function hideGameScreens(){
+			var e = document.getElementById("screen-title");
+			e.style.display = "none";
+			e.style.visibility = "hidden";
+
+			e = document.getElementById("screen-game-over");
+			e.style.display = "none";
+			e.style.visibility = "hidden";
+
+			e = document.getElementById("screen-pause");
+			e.style.display = "none";
+			e.style.visibility = "hidden";
+
+			e = document.getElementById("screen-about");
+			e.style.display = "none";
+			e.style.visibility = "hidden";
+		}
+
+		// ------ characters -------
+
+		function makeAvatar(){
+			avatar = new Character("image/actor/ninja.png", 170, 222, .5); 
+			avatar.targetY = 120;
+
+			//breathing effect
+			avatar.scaleMax = 1.1;
+			avatar.scaleMin = .97;
+			avatar.scaleIncrement = .0025;
+
+			container.appendChild(avatar.domElement);
+			avatar.emitter = new Emitter(container);
+
+		}		
+
+		function removeAllBaddies(){
+			var i = activeNPCList.length;
+			while (i--) {
+				var currentBaddie = activeNPCList[i];
+				activeNPCList.remove(activeNPCList.indexOfContains(currentBaddie));
+				container.removeChild(currentBaddie.domElement); 
+				spareNPCList.push(currentBaddie);
+			}
+		}
+
+
+		var gameFPS = 35;
+		var previousGameTickTime = 0;
+		var activeScreen = 0;
+		var SCREEN_TITLE = 1;
+		var SCREEN_GAME = 2;
+		var SCREEN_PAUSE = 3;
+		var SCREEN_GAME_OVER = 4;
+		var SCREEN_ABOUT = 5;
+
+		function loop(){
+			// a better timer pattern, new emerging standard, though it does't recur, need to call it in the looping function
+			requestAnimationFrame(loop);
+
+			// ---------------------------------
+			// TIMING and Frames Per Second (FPS)
+			var currentLoopTime = Date.now();
+
+			// the browser's full FPS
+			FPS = 1000 / (currentLoopTime - previousLoopTime);
+
+			// the FPS based on the previous game tick
+			var effectiveFPS =  1000 / (currentLoopTime - previousGameTickTime);
+
+			// ---------------------------------
+			// game "tick", moves / ticks time forward in the game at the rate determined by the gameFPS variable
+			if(effectiveFPS <= gameFPS){
+
+				//console.log("Frames Per Second: " + FPS);
+
+				if(gameStarted && !gamePaused && !gameOver){
+
+					// ---------------------------------
+					// the game ticks forward... 
+
+
+					// ---------------------------------
+					// baddies
+					// add a new baddie every 2 seconds
+					if (currentLoopTime - previousBaddieTime > 2000 || previousBaddieTime < 1){
+						if(activeNPCList.length < maxNPCs){
+							makeNPC();
+						}
+						previousBaddieTime = currentLoopTime;
+					}
+
+					updateNPCs();
+
+					// ---------------------------------
+					// GAME RULES - AVATAR COLLISIONS and HEALTH
+
+					if(avatar.health > 0){
+
+						for (i=0; i<activeNPCList.length; i++){
+							// var baddieCollide = 0;
+							var currentBaddie = activeNPCList[i];
+							var baddieCollide = isCollidingRectDomElement(avatar.domElement, currentBaddie.domElement);
+
+							if(baddieCollide !== 0){
+								// console.log("colliding with baddie!");
+								if(avatar.jumping === true && avatar.status === 2){
+									//avatar wins
+									console.log("baddie squished!");
+									playSound("sfx-hit");
+									currentBaddie.hurt(101);
+									score(110);
+									progress(1);
+								}else{
+									//baddie wins
+									console.log("avatar is hurt!");
+									avatar.hurt(11);
+									score(-6);
+									playSound("sfx-hit-avatar");
+								}
+							}
+
+							if(currentBaddie.health < 0){
+								activeNPCList.remove(activeNPCList.indexOfContains(currentBaddie));
+								emitter.makeExplosion(currentBaddie.x, currentBaddie.y, 10);
+								container.removeChild(currentBaddie.domElement); 
+								spareNPCList.push(currentBaddie);
+							}
+
+						}
+
+					}else{
+						showScreenGameOver();
+						return;
+					}
+
+					// ---------------------------------
+					// display
+
+					//update health display
+					health();
+
+					// then update all the particles. 
+					emitter.update();
+
+					// update / move the parallax background
+					horizontalParallax(bg1, bg2, -1, 10, .5);
+					horizontalParallax(fg1, fg2, -1, 10, 1);
+
+
+					// update the avatar
+					avatar.update();
+
+					// ---------------------------------
+					// input
+
+					// capture the latest keypresses and detect those released
+					handleKeys();
+
+
+					// ---------------------------------
+					// store the current time as latest game tick time						
+					previousGameTickTime = currentLoopTime;
+
+				}else if(!gameOver && gamePaused && gameStarted){
+					handleKeysScreenPause();
+				}else{
+
+					// ---------------------------------
+					// game not started... yet...
+					// game tick is useful to update the non-game screens
+
+					// show a slower parallax on the non-game screens
+					horizontalParallax(bg1, bg2, 1, 1, .5);
+					horizontalParallax(fg1, fg2, 1, 1, 1);
+
+					// have the avatar hang out on the non-game screens too
+					var groundPosition = getPosition(ground);						
+
+					switch(activeScreen){
+						case SCREEN_TITLE:
+							avatar.x = gameWidth/2;
+							avatar.y = groundPosition[1];
+							avatar.update();
+							avatar.stand();
+							handleKeysScreenStart();
+							break;
+						case SCREEN_ABOUT:
+							avatar.x = gameWidth/2;
+							avatar.y = groundPosition[1];
+							avatar.update();
+							avatar.stand();
+							handleKeysScreenAbout();
+							break;
+						case SCREEN_GAME_OVER:
+							updateNPCs();
+							handleKeysScreenGameOver();
+							break;
+						default:
+							break;
+					}
+				}
+			}
+
+			previousLoopTime = currentLoopTime;
+		}
+
+		function updateNPCs(){
+			for (i=0; i<activeNPCList.length; i++) {
+				var npc = activeNPCList[i];
+				npc.update();
+
+				// go left
+				// npc.targetX = npc.x - 5;
+				// var nearAvatar = Math.abs(Math.abs(avatar.x + (avatar.width/2)) - Math.abs(npc.x));
+				var nearAvatar = Math.abs(Math.abs(avatar.x) - Math.abs(npc.x));
+				if (nearAvatar < 20){
+					npc.jumping = true;
+				}
+				
+				// follow avatar
+				if (avatar.x < npc.x){
+					npc.targetX = npc.x - 5;
+				}else if (avatar.x > npc.x){
+					npc.targetX = npc.x + 5;
+				}						
+			}		
+		}
+
+		function moveToGround(character){
+		    character.status = 2;
+				    
+            var groundPosition = getPosition(ground);
+            var characterPosition = getPosition(character.domElement);
+            var characterSize = getSize(character.domElement);
+
+            // position of character on the ground
+            var characterGroundPositionY = Math.floor(groundPosition[1] - characterSize[1]);
+            var characterActualPositionY = Math.floor(characterPosition[1]);
+
+            character.targetY = characterGroundPositionY;
+            character.targetX = characterPosition[0] + characterSize[0]/2;				
+		}
+
+		function makeNPC(){
+			var npc;
+			if(spareNPCList.length>0) {
+				// if one is already in the spare array, recycle it
+				npc = spareNPCList.pop(); 	
+
+				// this seems to fix a bug where reused npc's appear near the center of the screen (likely where they were squished)
+				npc.x = -500;
+				npc.targetX = npc.x;
+				npc.targetY = gameHeight-100-npc.height;
+				npc.y = npc.targetY;
+				npc.prepare();
+
+			} else {
+				// otherwise make a new one
+				var randomHW = randomRange(16,100);
+ 				npc = new Character("image/actor/tomato.png", randomHW, randomHW); 
+			}
+
+			npc.scaleMax = 1.2;
+			npc.scaleMin = .97;
+			npc.wobble = true;
+			npc.rotate = randomRange(5,20);
+			npc.rotateMax = randomRange(5,20);
+			npc.velX = randomRange(-15,15);
+			npc.velY = randomRange(-15,15);
+			npc.size = randomRange(0.5,1);
+			npc.health = 100;
+			npc.fullStop = false;
+
+ 			npc.prepare();	
+
+			npc.x = randomRange(-15, 15);
+ 			npc.targetX = gameWidth-100;
+			npc.targetY = gameHeight-100-npc.height;
+			npc.y = npc.targetY;
+
+			container.appendChild(npc.domElement);
+			npc.emitter = new Emitter(container);
+
+
+			activeNPCList.push(npc);
+		}
+		
+		function initMouseListeners() {
+			document.addEventListener('mousemove', onMouseMove, false);
+			document.addEventListener( 'mousedown', onMouseDown, false );
+			document.addEventListener( 'mouseup', onMouseUp, false );
+		}
+
+		function onMouseMove( event ) {
+			event.preventDefault();
+			mouseX = event.clientX - container.dataset.x;
+			mouseY = event.clientY - container.dataset.y;
+		}
+
+		function onMouseDown(event) {
+			mouseDown = true; 
+			// moveAvatarMouse(event.clientX - container.dataset.x, event.clientY - container.dataset.y);
+		}
+
+		function onMouseUp(event) {
+			mouseDown = false; 
+		}
+
+		function moveAvatarMouse(x,y){
+			avatar.targetX = x;
+			avatar.targetY = y;
+		}			
+
+		function moveAvatarKeyboard(xDistance,yDistance){
+			if(xDistance !== 0){
+				avatar.targetX = avatar.x + xDistance;
+			}
+			if(yDistance !== 0){
+				avatar.targetY = avatar.y + yDistance;
+			}
+			
+	        //console.log("moving status... " + avatar.xDirection + ";" + avatar.yDirection + ";" + avatar.zDirection);
+			
+		}
+
+		function wordBalloon(speaker, text){
+			//var balloon = document.createElement("<p class='triangle-right'>" + text + "</p>");
+
+
+			var balloon = document.createElement("div");
+			balloon.className = "triangle-right"; 
+			balloon.style.width = "200px"; 
+
+			balloon.textContent = text;
+
+			// balloon.style.height = gameHeight+"px"; 
+			// balloon.dataset.width = gameWidth;
+			// balloon.dataset.height = gameHeight;
+			// balloon.dataset.x = Math.floor((SCREEN_WIDTH - gameWidth)/2);
+			// balloon.dataset.y = Math.floor((SCREEN_HEIGHT - gameHeight)/2);
+			// balloon.dataset.y = (balloon.dataset.y > 0) ? balloon.dataset.y : 0;
+
+			// balloon.style.top = (speaker.y - speaker.height) + "px";
+			// balloon.style.left = (speaker.x + container.dataset.x) + "px"; 
+
+
+			balloon.style.top = (speaker.y - speaker.height) + "px";
+			balloon.style.left = speaker.x + "px"; 
+
+			container.appendChild(balloon);
+			
+			// document.body.appendChild(balloon);
+
+			// balloon.style.top = speaker.y + speaker.height;
+			// balloon.style.left = speaker.x;
+
+		}
+		
+		// input - keyboard
+		var keysInUse = [];
+		function initKeyboardListeners() {
+			document.addEventListener('keydown', onKeyDown, false);
+			document.addEventListener( 'keyup', onKeyUp, false );
+		}
+		function onKeyDown(event){
+			event.preventDefault();
+			//console.log("keydown: " + event.keyCode);
+			if(keysInUse.contains(event.keyCode) === false){
+				keysInUse.push(event.keyCode);
+			}
+		}
+		function onKeyUp(event){
+			// console.log("keyup: " + event.keyCode);
+			var i = keysInUse.indexOfContains(event.keyCode);
+			if(i > -1){
+				keysInUse.remove(i);
+			}
+		}
+		
+		var LEFT = 37;
+		var UP = 38;
+		var RIGHT = 39;
+		var DOWN = 40;
+		var SPACE = 32;
+		var _A = 65;
+		var _B = 66;
+		var _C = 67;
+		var _P = 80;
+		var _Q = 81;
+		var _S = 83;
+		var _U = 85;
+		var ESC = 27;
+		var modifiers = String("16,91,18,17").split(",");
+
+		function handleKeys(){
+			//console.log("keysInUse: " + keysInUse);
+			if(keysInUse.contains(UP)){
+				moveAvatarKeyboard(0,-10);
+			}
+			if(keysInUse.contains(DOWN)){
+				moveAvatarKeyboard(0,10);
+			}
+			if(keysInUse.contains(LEFT)){
+				moveAvatarKeyboard(-10,0);
+			}
+			if(keysInUse.contains(RIGHT)){
+				moveAvatarKeyboard(10,0);
+			}
+			if(keysInUse.contains(SPACE)){
+				avatar.jumping = true;
+			}
+			
+			if(keysInUse.contains(_P)){
+				pauseGame();
+			}
+
+			// todo:
+			// this introduces a bug... rapid pause/unpause 
+			// if(keysInUse.contains(ESC)){
+			// 	pauseGame();
+			// }
+
+			// // look for and clear modifier keys... shift, control, alt, they don't seem to be cleared on their own
+			// if(keysInUse.length > 1){
+			// 	//console.log("keysInUse: " + keysInUse);
+			// 	var i = keysInUse.indexOfContains(16);
+			// 	if(i > -1){
+			// 		keysInUse.remove(i);
+			// 		i = -1;
+			// 	}
+			// 	i = keysInUse.indexOfContains(17);
+			// 	if(i > -1){
+			// 		keysInUse.remove(i);
+			// 		i = -1;
+			// 	}
+			// 	i = keysInUse.indexOfContains(18);
+			// 	if(i > -1){
+			// 		keysInUse.remove(i);
+			// 		i = -1;
+			// 	}
+			// 	i = keysInUse.indexOfContains(91);
+			// 	if(i > -1){
+			// 		keysInUse.remove(i);
+			// 		i = -1;
+			// 	}
+			// }
+
+		}
+
+		function handleKeysScreenStart(){
+			// console.log("keysInUse: " + keysInUse);
+
+			if(keysInUse.contains(LEFT)){
+				moveAvatarKeyboard(-10,0);
+			}
+			if(keysInUse.contains(SPACE)){
+				startGame();
+			}
+			if(keysInUse.contains(ESC)){
+				showScreenAbout();
+			}
+			if(keysInUse.contains(_C)){
+				showScreenAbout();
+			}
+			if(keysInUse.contains(_A)){
+				showScreenAbout();
+			}
+			if(keysInUse.contains(_S)){
+				startGame();
+			}
+
+		}
+		function handleKeysScreenAbout(){
+			if(keysInUse.contains(SPACE)){
+				showScreenTitle();
+			}
+			if(keysInUse.contains(ESC)){
+				showScreenTitle();
+			}
+			if(keysInUse.contains(_Q)){
+				showScreenTitle();
+			}
+			if(keysInUse.contains(_B)){
+				showScreenTitle();
+			}
+		}
+		function handleKeysScreenPause(){
+			// if(keysInUse.contains(_P)){
+			// 	unPauseGame();
+			// }
+			if(keysInUse.contains(SPACE)){
+				unPauseGame();
+			}
+			if(keysInUse.contains(ESC)){
+				unPauseGame();
+			}
+			if(keysInUse.contains(_U)){
+				unPauseGame();
+			}
+			if(keysInUse.contains(_Q)){
+				quitGame();
+			}
+
+		}
+		function handleKeysScreenGameOver(){
+			if(keysInUse.contains(ESC)){
+				showScreenTitle();
+			}
+			if(keysInUse.contains(_P)){
+				showScreenTitle();
+			}
+			if(keysInUse.contains(_Q)){
+				quitGame();
+			}
+			if(keysInUse.contains(_S)){
+				startGame();
+			}
+
+		}
+
+		var scoreValue = 0;
+		function score(amount){
+			amount = amount||0;
+			scoreValue += amount;
+
+			document.getElementById("score-label").textContent = scoreValue;
+		}
+
+		var progressGoalValue = 10;
+		var progressValue = 0;
+		function progress(amount){
+			amount = amount||0;
+			progressValue += amount;
+
+			document.getElementById("progress-label").textContent = progressValue + " of " + progressGoalValue;
+		}
+
+		var healthTotalValue = 10;
+		function health(){
+			var amount = (avatar.health > 0) ? avatar.health:0;
+			//display the current health of the avatar
+			document.getElementById("health-label").textContent = amount + " of " + healthTotalValue;
+		}
+
+		var studentsInitialsAndPoints = [
+			"rob:105",
+			"rad:104",
+			"hey:103",
+			"wow:102",
+			"zzz:101",
+		];
+
+		function showStudentsAndPoints(){
+			document.getElementById("great-job").innerHTML = "<li>Great Job! These students, designed, built, and played their way to making this game!!!</li>";
+			for(var i=0; i<studentsInitialsAndPoints.length; i++){
+				document.getElementById("great-job").innerHTML += "<li class='student-score'>" + studentsInitialsAndPoints[i] + "</li>";
+			}
+		}
+
+	</script>
+
+	<div id="screen-title" class="screen">
+		<ul id="title">
+			<li>Underwater Tomato Ninja</li>
+		</ul>
+		<ul id="info">
+			<li>Controls: Arrow Keys + Spacebar</li>
+			<li><button id="button-start" onclick="startGame()">start</button></li>
+			<li><button id="button-credits" onclick="showScreenAbout()">credits</button></li>
+		</ul>
+	</div>
+
+	<div id="screen-pause" class="screen">
+		<ul id="title">
+			<li>game paused</li>
+		</ul>
+		<ul id="info">
+			<li>press ESC or SPACEBAR to continue or Q to quit</li>
+			<li><button id="button-unpause" onclick="unPauseGame()">un-pause</button></li>
+			<li><button id="button-quit" onclick="quitGame()">quit</button></li>
+		</ul>
+	</div>		
+
+	<div id="screen-game-over" class="screen">
+		<ul id="title">
+			<li>game over</li>
+		</ul>
+		<ul id="info">
+			<li>sad trumpet</li>
+			<li><button id="button-restart" onclick="startGame()">play again</button></li>
+			<li><button id="button-quit" onclick="quitGame()">quit</button></li>
+		</ul>
+	</div>
+
+	<div id="screen-about" class="screen">
+		<ul id="title">
+			<li>About</li>
+			<li>This game was built to explore designing and building games in HTML5!</li>
+		</ul>
+		<ul id="great-job">
+		</ul>
+		<ul id="special-thanks">
+			<li>Thank You!</li>
+			<li>Students! The Kids Read Comics Event! The game development community, the Lostcast, Seb Lee-Delisle, my supportive wife and daughter for understanding and supporting me making games, workshops, and comics!</li>
+		</ul>
+		<ul id="info">
+			<li><button id="button-back" onclick="showScreenTitle()">back</button></li>
+		</ul>	
+	</div>
+
+	<div id="score-group" class="game-label">
+		<div id="score-label">score:</div>
+		<div id="score-value">score</div>
+	</div>
+
+	<div id="progress-group" class="game-label">
+		<div id="progress-label">progress:</div>
+		<div id="progress-value">progress</div>
+	</div>
+
+	<div id="health-group" class="game-label">
+		<div id="health-label">health:</div>
+		<div id="health-value">health</div>
+	</div>
+
+	<audio controls id="background-audio-main" class="game-sound">
+		<source src="sound/background/song2.mp3"/>
+	</audio>
+
+	<audio controls id="background-audio-alternate" class="game-sound">
+		<source src="sound/background/song1.mp3"/>
+	</audio>
+
+	<audio controls id="sfx-hit" class="game-sound">
+		<source src="sound/effect/Randomize.mp3"/>
+	</audio>
+
+	<audio controls id="sfx-hit-avatar" class="game-sound">
+		<source src="sound/effect/Hit_Hurt7.mp3"/>
+	</audio>
+
+
+</body>
+</html>

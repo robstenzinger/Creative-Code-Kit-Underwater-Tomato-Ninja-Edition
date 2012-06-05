@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>Sound FX with HTML5 Audio Context - WEBKIT BROWSER REQUIRED</title>
+
+<script>
+
+// this example needs to load from a web server
+// on linux and OSX, open Terminal and run "python -m SimpleHTTPServer"
+// then open this example in Google Chrome at localhost:8000
+
+// this example from HTML5Rocks.com:
+// http://www.html5rocks.com/en/tutorials/webaudio/games/
+// code in this example licensed under the Apache 2.0 License.
+
+var context;
+var bufferLoader;
+
+function init() {
+  context = new webkitAudioContext();
+
+  bufferLoader = new BufferLoader(
+    context,
+    [
+      'sound/effect/Randomize.mp3',
+      'sound/effect/Powerup15.mp3',
+    ],
+    finishedLoading
+    );
+
+  bufferLoader.load();
+}
+
+function finishedLoading(bufferList) {
+  // Create two sources and play them both together.
+  var source1 = context.createBufferSource();
+  var source2 = context.createBufferSource();
+  source1.buffer = bufferList[0];
+  source2.buffer = bufferList[1];
+
+  source1.connect(context.destination);
+  source2.connect(context.destination);
+  source1.noteOn(0);
+  source2.noteOn(0);
+}
+
+function BufferLoader(context, urlList, callback) {
+  this.context = context;
+  this.urlList = urlList;
+  this.onload = callback;
+  this.bufferList = new Array();
+  this.loadCount = 0;
+}
+
+BufferLoader.prototype.loadBuffer = function(url, index) {
+  // Load buffer asynchronously
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+
+  var loader = this;
+
+  request.onload = function() {
+    // Asynchronously decode the audio file data in request.response
+    loader.context.decodeAudioData(
+      request.response,
+      function(buffer) {
+        if (!buffer) {
+          alert('error decoding file data: ' + url);
+          return;
+        }
+        loader.bufferList[index] = buffer;
+        if (++loader.loadCount == loader.urlList.length)
+          loader.onload(loader.bufferList);
+      }
+    );
+  }
+
+  request.onerror = function() {
+    alert('BufferLoader: XHR error');
+  }
+
+  request.send();
+}
+
+BufferLoader.prototype.load = function() {
+  for (var i = 0; i < this.urlList.length; ++i)
+  this.loadBuffer(this.urlList[i], i);
+}
+
+</script>
+
+</head>
+<body onload="init();">
+</body>
+</html>

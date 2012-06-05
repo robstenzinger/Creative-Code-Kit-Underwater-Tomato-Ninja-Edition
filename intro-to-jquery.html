@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Intro to jQuery</title>
+
+<!-- include the jQuery script -->
+<script src="js/jquery-1.7.2.min.js"></script>
+
+<!-- use jQuery in your own script -->
+<script type="text/javascript">
+
+// Explaning the code below...
+
+// 1
+// "$" is a shortcut for jQuery
+
+// 2
+// $(function(){ ... }); tells jQuery to run this function when jQuery is loaded.
+
+$(function(){
+	// 4
+	// jQuery uses a selector approach similar to CSS: $(SELECTOR)
+	// $("body") is telling jQuery to select/pay attention to the <body> ... </body> part of the document.
+	// append can add a chunk of HTML or text
+	$("body").append("<p>This message was added via jQuery!</p>");
+});
+
+</script>
+
+</head>
+<body>
+When this page loads, you'll see a message created by jQuery!
+</body>
+</html>

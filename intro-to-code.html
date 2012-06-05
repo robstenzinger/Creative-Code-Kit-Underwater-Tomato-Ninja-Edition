@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Intro to Code</title>
+
+<script type="text/javascript">
+
+// variable - store and retrieve things
+var sometext = "this is some text";
+console.log(sometext);
+
+// conditional 
+if(sometext.length > 0){
+	console.log("length of sometext: " + sometext.length);
+}
+
+// loop
+for(i=0; i<10; i++){
+	console.log(i);
+}
+
+// function
+function helloJS() {
+    alert("Hello JavaScript! Be sure to view your browser's JavaScript console to see more messages logged via this page's JavaScript code.");
+}
+</script>
+
+</head>
+<body onLoad="helloJS();">
+<p>When this page loads, you'll see a message created by JavaScript!</p>
+<p>Be sure to view your browser's JavaScript console to see more messages logged via this page's JavaScript code.</p>
+</body>
+</html>
