@@ -99,7 +99,8 @@ function changePreviewImage(){
 }
 
 function updatePreviewCSS(){
-	var transformCSS = "translateX(" + $("#translate-x").val() + "px) translateY(" + $("#translate-y").val() + "px) translateZ(" + $("#translate-z").val() + "px) rotateX(" + $("#rotate-x").val() + "deg) rotateY(" + $("#rotate-y").val() + "deg) rotateZ(" + $("#rotate-z").val() + "deg)";
+	var scale = $("#scale").val()/100;
+	var transformCSS = "scale(" + scale + ") translateX(" + $("#translate-x").val() + "px) translateY(" + $("#translate-y").val() + "px) translateZ(" + $("#translate-z").val() + "px) rotateX(" + $("#rotate-x").val() + "deg) rotateY(" + $("#rotate-y").val() + "deg) rotateZ(" + $("#rotate-z").val() + "deg)";
 	//var additionalCSS = "transform-origin-x"
 	//var viewerCSS = "";
 
@@ -186,6 +187,15 @@ $(function(){
 		<form id="css-controls">
 			<fieldset>
 			<div id="css-transform-settings">
+				<fieldset>
+					<legend>Scale</legend>
+					<ul>
+						<li>
+							<label id="scale-label" for="scale"></label>
+							<input id="scale" name="scale" type="range" min="1" max="200" default="100" />
+						</li>
+					</ul>
+				</fieldset>				
 				<fieldset>
 				<legend>Translate</legend>
 					<ul>

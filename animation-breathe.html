@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>character Scrolling Refined</title>
+
+<script src="js/css-prefix-finder.js"></script>
+
+<script type="text/javascript">
+
+function update(){
+	
+
+	if(character1.scale >= character1.scaleMax){
+		character1.scaleDirection = character1.scaleDirection * -1;
+		character1.scale = character1.scaleMax-character1.scaleIncrement;
+	}else if(character1.scale <= character1.scaleMin){
+		character1.scaleDirection = character1.scaleDirection * -1;
+		character1.scale = character1.scaleMin+character1.scaleIncrement;
+	}else{
+		character1.scale = character1.scale + (character1.scaleIncrement * character1.scaleDirection);
+	}
+
+	character1.style[ transformstring ] = "scale("+character1.scale+")";
+
+}
+
+
+function characterLayer(imageURL, width, height, x, y, className){
+
+	var character = document.createElement("div");
+
+	character.scale = 1;
+
+	character.scaleMax = 1.1;
+	character.scaleMin = .99;
+	character.scaleDirection = 1;
+	character.scaleIncrement = .0025;
+
+
+	character.dataset.x = x;
+	character.dataset.y = y;
+	character.dataset.width = width;
+	character.dataset.height = height;	
+
+	character.className = (className) ? className : "";
+	character.style.background = "url(" + imageURL + ")";
+	character.style.width = width + "px";
+	character.style.height = height + "px";
+	character.style.backgroundSize = width + "px " + height + "px";
+	character.style.position = "absolute";
+	character.style.display = "block";
+	character.style[transformstring + "Origin"] = "0px 0px";
+
+	document.body.appendChild(character);
+	return character;
+}
+
+var character1;
+
+function prepareExample() {
+
+    prepareCSSPrefix();
+    
+	character1 = characterLayer("image/actor/puppy.png", 160, 225, 0, 0, "");
+
+	setInterval(update, 1000 / 30);
+}
+
+
+
+</script>
+
+</head>
+<body onLoad="prepareExample();">
+</body>
+</html>

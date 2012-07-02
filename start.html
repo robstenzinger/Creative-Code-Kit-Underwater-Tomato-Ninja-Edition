@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Starting the HTML5 Game Workshop!</title>
+<style>
+html,body{
+	width: 100%;
+	height: 100%;	
+	margin:0px;
+	padding:0px;
+}
+.ready{
+	background-color: darkgreen;
+	color:white;
+	font-size: 120px;
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+.not-ready{
+	background-color: yellow;
+	color:red;
+	font-size: 100px;
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+</style>
+<script type="text/javascript">
+// the workshop currently requires we all run Google Chrome
+function checkForGoogleChrome(direction) {
+
+	var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+
+	var element = document.getElementById("ready-message");
+	if(is_chrome){
+		element.className = "ready";
+		element.innerHTML = "READY PLAYER 1";
+	}else{
+		element.className = "not-ready";
+		element.innerHTML = "Please switch to Google Chrome for this workshop's examples.";
+	}
+
+}
+</script>
+
+</head>
+<body onLoad="checkForGoogleChrome();">
+<div id="ready-message"></div>
+</body>
+</html>
