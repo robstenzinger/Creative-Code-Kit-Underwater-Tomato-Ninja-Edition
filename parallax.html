@@ -3,10 +3,12 @@
 <head>
 <title>Parallax Scrolling</title>
 
+<script src="js/cssPrefix.js"></script>
+
 <script type="text/javascript">
 
 function verticalParallax(parallaxPanel, parallaxPanel2, directionY, speedY, distanceFactor, zoomFactor, zFactor){
-	
+
 	distanceFactor = (distanceFactor) ? distanceFactor:.5;
 	zoomFactor = (zoomFactor) ? zoomFactor:1;
 	zFactor = (zFactor) ? zFactor:0;
@@ -21,27 +23,27 @@ function verticalParallax(parallaxPanel, parallaxPanel2, directionY, speedY, dis
 		parallaxPanel2Y = (parallaxPanelY < height) ? parallaxPanelY-height:parallaxPanelY+height;
 
 		parallaxPanel2Y = zoomFactor * parallaxPanel2Y;
-		parallaxPanelY = zoomFactor * parallaxPanelY;		
+		parallaxPanelY = zoomFactor * parallaxPanelY;
 	}else{
 		parallaxPanelY = parallaxPanelY - (speedY*distanceFactor);
 		parallaxPanelY = (parallaxPanelY < height && parallaxPanelY > (-1*height)) ? parallaxPanelY:0;
 		parallaxPanel2Y = (parallaxPanelY > (-1*height)) ? parallaxPanelY+height:parallaxPanelY-height;
 
 		parallaxPanel2Y = zoomFactor * parallaxPanel2Y;
-		parallaxPanelY = zoomFactor * parallaxPanelY;		
+		parallaxPanelY = zoomFactor * parallaxPanelY;
 	}
 
 	parallaxPanel.dataset.y = parallaxPanelY;
 	parallaxPanel2.dataset.y = parallaxPanel2Y;
 
-	parallaxPanel.style[ transformstring ] = "translate3d(0px, " + parallaxPanelY + "px, " + zFactor + "px) scale(" + zoomFactor + ")";
-	parallaxPanel2.style[ transformstring ] = "translate3d(0px, " + parallaxPanel2Y + "px, " + zFactor + "px) scale(" + zoomFactor + ")";
+	parallaxPanel.style[ cssPrefix.cssTransform ] = "translate3d(0px, " + parallaxPanelY + "px, " + zFactor + "px) scale(" + zoomFactor + ")";
+	parallaxPanel2.style[ cssPrefix.cssTransform ] = "translate3d(0px, " + parallaxPanel2Y + "px, " + zFactor + "px) scale(" + zoomFactor + ")";
 
 }
 
 
 function horizontalParallax(parallaxPanel, parallaxPanel2, directionX, speedX, distanceFactor, zoomFactor, zFactor){
-	
+
 	distanceFactor = (distanceFactor) ? distanceFactor:.5;
 	zoomFactor = (zoomFactor) ? zoomFactor:1;
 	zFactor = (zFactor) ? zFactor:0;
@@ -56,28 +58,34 @@ function horizontalParallax(parallaxPanel, parallaxPanel2, directionX, speedX, d
 		parallaxPanel2X = (parallaxPanelX < width) ? parallaxPanelX-width:parallaxPanelX+width;
 
 		parallaxPanel2X = zoomFactor * parallaxPanel2X;
-		parallaxPanelX = zoomFactor * parallaxPanelX;		
+		parallaxPanelX = zoomFactor * parallaxPanelX;
 	}else{
 		parallaxPanelX = parallaxPanelX - (speedX*distanceFactor);
 		parallaxPanelX = (parallaxPanelX < width && parallaxPanelX > (-1*width)) ? parallaxPanelX:0;
 		parallaxPanel2X = (parallaxPanelX > (-1*width)) ? parallaxPanelX+width:parallaxPanelX-width;
 
 		parallaxPanel2X = zoomFactor * parallaxPanel2X;
-		parallaxPanelX = zoomFactor * parallaxPanelX;		
+		parallaxPanelX = zoomFactor * parallaxPanelX;
 	}
 
 	parallaxPanel.dataset.x = parallaxPanelX;
 	parallaxPanel2.dataset.x = parallaxPanel2X;
 
-	parallaxPanel.style[ transformstring ]  = "translate3d("+parallaxPanelX+"px, 0px, " + zFactor + "px) scale(" + zoomFactor + ")";
-	parallaxPanel2.style[ transformstring ] = "translate3d("+parallaxPanel2X+"px, 0px, " + zFactor + "px) scale(" + zoomFactor + ")";
+	parallaxPanel.style[ cssPrefix.cssTransform ]  = "translate3d("+parallaxPanelX+"px, 0px, " + zFactor + "px) scale(" + zoomFactor + ")";
+	parallaxPanel2.style[ cssPrefix.cssTransform ] = "translate3d("+parallaxPanel2X+"px, 0px, " + zFactor + "px) scale(" + zoomFactor + ")";
 
 }
 
 function update(){
+	// use one of the two approaches to manage the parallax scrolling
+
+	// 1 - HORIZONTAL
 	// horizontalParallax(bg1, bg2, -1, 10, .5);
 	// horizontalParallax(fg1, fg2, -1, 10, 1);
 
+	// OR
+
+	// 2 - VERTICAL
 	verticalParallax(bg1, bg2, 1, 5, .25);
 	verticalParallax(fg1, fg2, 1, 5, 1);
 }
@@ -89,7 +97,7 @@ function parallaxLayer(imageURL, width, height, x, y, className){
 	parallax.dataset.x = x;
 	parallax.dataset.y = y;
 	parallax.dataset.width = width;
-	parallax.dataset.height = height;	
+	parallax.dataset.height = height;
 
 	parallax.className = (className) ? className : "";
 	parallax.style.background = "url(" + imageURL + ")";
@@ -98,7 +106,7 @@ function parallaxLayer(imageURL, width, height, x, y, className){
 	parallax.style.backgroundSize = width + "px " + height + "px";
 	parallax.style.position = "absolute";
 	parallax.style.display = "block";
-	parallax.style[transformstring + "Origin"] = "0px 0px";
+	parallax.style[cssPrefix.cssTransform + "Origin"] = "0px 0px";
 
 	document.body.appendChild(parallax);
 	return parallax;
@@ -109,68 +117,14 @@ var fg2;
 var bg1;
 var bg2;
 
- var domPrefixes = "Webkit Moz O ms Khtml".split(" "),
-      animation = false,
-      transformation = false,
-      transition = false,
-      animationstring = "animation",
-      transformstring = "transform",
-      transitionstring = "transition"
-      keyframeprefix = "",
-      pfx = "";
-      
-function prepareCSSPrefix(){
-
-	var e = document.body;
-
-	if( e.style.animationName ) { animation = true; }    
-	if( e.style.transform ) { transformation = true; }    
-	if( e.style.transition ) { transition = true; }    
-
-	if( animation === false ) {
-		for( var i = 0; i < domPrefixes.length; i++ ) {
-		  if( e.style[ domPrefixes[i] + "AnimationName" ] !== undefined ) {
-		    pfx = domPrefixes[ i ];
-		    animationstring = pfx + "Animation";
-		    keyframeprefix = "-" + pfx.toLowerCase() + "-";
-		    animation = true;
-		    break;
-		  }
-		}
-	}
-
-	if( transformation === false ) {
-		for( var i = 0; i < domPrefixes.length; i++ ) {
-		  if( e.style[ domPrefixes[i] + "Transform" ] !== undefined ) {
-		    pfx = domPrefixes[ i ];
-		    transformstring = pfx + "Transform";
-		    transformation = true;
-		    break;
-		  }
-		}
-	}
-
-	if( transition === false ) {
-		for( var i = 0; i < domPrefixes.length; i++ ) {
-		  if( e.style[ domPrefixes[i] + "Transition" ] !== undefined ) {
-		    pfx = domPrefixes[ i ];
-		    transitionstring = pfx + "Transition";
-		    transition = true;
-		    break;
-		  }
-		}
-	}	
-
-}
-
 
 function prepareExample() {
 
-    prepareCSSPrefix();
-    
+    // background layer
 	bg1 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
 	bg2 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
 
+	// foreground layer
 	fg1 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
 	fg2 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
 

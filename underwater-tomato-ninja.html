@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <meta charset="utf-8">
-<!-- 
+<!--
 
 // HTML5 Game Starter Kit
 By Rob Stenzinger and others as noted
 
 
 Image Files and Music Files are provided under Creative Commons
-Copyright (C) 2012 Rob Stenzinger
+Copyright (C) 2012-2013 Rob Stenzinger
 Attribution-NonCommercial-ShareAlike 3.0 United States (CC BY-NC-SA 3.0)
 http://creativecommons.org/licenses/by-nc-sa/3.0/us/
 
@@ -17,21 +17,21 @@ Code (HTML, CSS, JavaScript) is provided under the MIT License
 http://www.opensource.org/licenses/mit-license.php
 Copyright (C) 2012 Rob Stenzinger
 
-Permission is hereby granted, free of charge, to any person obtaining a 
-copy of this software and associated documentation files (the "Software"), 
-to deal in the Software without restriction, including without limitation 
-the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-and/or sell copies of the Software, and to permit persons to whom the 
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in 
+The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
  -->
@@ -40,6 +40,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 	<title>HTML5 Game - Underwater Tomato Ninja</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<style type="text/css">
+
+		#test-image{
+			background-image: url('image/objects/cloud-1.png');
+			width:350px;
+			height:150px;
+			background-repeat: no-repeat;
+		}
+
 		body {
 			background-color: #000000;
 			margin: 0px;
@@ -47,43 +55,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 			width : 100%;
             /*need this otherwise container will hijack all clicks/touches!*/
 			-webkit-transform: translateZ(-1000px);
-			-webkit-transform-style: preserve-3d; 
+			-webkit-transform-style: preserve-3d;
+			transform: translateZ(-1000px);
+			transform-style: preserve-3d;
 		}
-		
+
 		.ground {
 			position : absolute;
-			display : block; 
+			display : block;
 			background-color:#fff;
 		   opacity:.5;
 		}
-				
-		.container {			
-			position : absolute; 
-			display : block; 
+
+		.container {
+			position : absolute;
+			display : block;
 			-webkit-transform-style: preserve-3d;
 			-webkit-transform : translateZ(0px);
+			transform-style: preserve-3d;
+			transform : translateZ(0px);
 			overflow : hidden;
 			pointer-events :none;
 		}
 
-/*		.screen {
-			position: absolute;
-			margin: auto;
-			width: 640px;
-			height:480px;
-
-			color: #eae2e2;
-			font-weight: bold;
-			font-variant: small-caps;
-			font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-		}*/
-
 		#screen-game-over{
-			background-color: rgba(185, 49, 49, 0.48);	
+			background-color: rgba(185, 49, 49, 0.48);
 		}
 
 		#screen-about{
-			background-color: rgba(120, 49, 185, 0.48);		
+			background-color: rgba(120, 49, 185, 0.48);
 		}
 
 		#screen-pause{
@@ -91,23 +91,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 		}
 
 		#screen-title{
-			background-color: rgba(49, 108, 185, 0.48);	
+			background-color: rgba(49, 108, 185, 0.48);
 		}
-		
+
 		#button-start{
 			left: 50%;
 			right: 50%;
-			width: 300px;	
+			width: 300px;
 		}
 		#button-restart{
 			left: 50%;
 			right: 50%;
-			width: 300px;	
+			width: 300px;
 		}
 		#button-unpause{
 			left: 50%;
 			right: 50%;
-			width: 300px;	
+			width: 300px;
 		}
 
 		.student-score{
@@ -122,184 +122,78 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 			left:-1000px;
 		}
 
+		.screen {
+			position: absolute;
+			margin: auto;
+			width: 640px;
+			height:480px;
+			color: #eae2e2;
+			font-weight: bold;
+			font-variant: small-caps;
+			font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 
-.screen {
-	position: absolute;
-	margin: auto;
-	width: 640px;
-	height:480px;
+			display: block;
+			visibility: visible;
 
-	color: #eae2e2;
-	font-weight: bold;
-	font-variant: small-caps;
-	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-	
-	display: block;
-	visibility: visible;
-		
-}
+		}
 
-button:hover{
-	background-color: #000000;
-	color: #ffffff;
-}
+		button:hover{
+			background-color: #000000;
+			color: #ffffff;
+		}
 
-.screen ul li{
-	list-style:none;
-	margin-left:0px;
-}
+		.screen ul li{
+			list-style:none;
+			margin-left:0px;
+		}
 
-.screen ul{
-	margin-left: 0px;
-	padding-left: 10px;
-	float: left;
-	width: 160px;
-}
+		.screen ul{
+			margin-left: 0px;
+			padding-left: 10px;
+			float: left;
+			width: 160px;
+		}
 
-.screen button{
-	border-style: solid;
-	font-weight: bold;
-	font-variant: small-caps;
-	color: #feeeee;
-	background-color: #861b1b;
-	border-color: #fae7e7;
-	position:absolute;
-	bottom: 10px;
-	right: 10px;
-}
+		.screen button{
+			border-style: solid;
+			font-weight: bold;
+			font-variant: small-caps;
+			color: #feeeee;
+			background-color: #861b1b;
+			border-color: #fae7e7;
+			position:absolute;
+			bottom: 10px;
+			right: 10px;
+		}
 
-.game-label{
-	color: #eae2e2;
-	font-weight: bold;
-	font-variant: small-caps;
-	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-	position:absolute;
-}
+		.game-label{
+			color: #eae2e2;
+			font-weight: bold;
+			font-variant: small-caps;
+			font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+			position:absolute;
+		}
 
-#progress{
-	left: 300px;
-	top: 150px;
-}
+		#progress{
+			left: 300px;
+			top: 150px;
+		}
 
-#score{
-	left: 800px;
-	top: 150px;	
-}
-
-
-/* ============================================================================================================================
-== BUBBLE WITH A RIGHT-ANGLED TRIANGLE
-** ============================================================================================================================ */
-
-/* THE SPEECH BUBBLE
-------------------------------------------------------------------------------------------------------------------------------- */
-
-.triangle-right {
-	position:relative;
-	padding:15px;
-	margin:1em 0 3em;
-	color:#fff;
-	background:#075698; /* default background for browsers without gradient support */
-	/* css3 */
-	background:-webkit-gradient(linear, 0 0, 0 100%, from(#2e88c4), to(#075698));
-	background:-moz-linear-gradient(#2e88c4, #075698);
-	background:-o-linear-gradient(#2e88c4, #075698);
-	background:linear-gradient(#2e88c4, #075698);
-	-webkit-border-radius:10px;
-	-moz-border-radius:10px;
-	border-radius:10px;
-}
-
-/* Variant : for top positioned triangle
------------------------------------------- */
-
-.triangle-right.top {
-	background:-webkit-gradient(linear, 0 0, 0 100%, from(#075698), to(#2e88c4));
-	background:-moz-linear-gradient(#075698, #2e88c4);
-	background:-o-linear-gradient(#075698, #2e88c4);
-	background:linear-gradient(#075698, #2e88c4);
-}
-
-/* Variant : for left positioned triangle
------------------------------------------- */
-
-.triangle-right.left {
-	margin-left:40px;
-	background:#075698;
-}
-
-/* Variant : for right positioned triangle
------------------------------------------- */
-
-.triangle-right.right {
-	margin-right:40px;
-	background:#075698;
-}
-
-/* THE TRIANGLE
-------------------------------------------------------------------------------------------------------------------------------- */
-
-.triangle-right:after {
-	content:"";
-	position:absolute;
-	bottom:-20px; /* value = - border-top-width - border-bottom-width */
-	left:50px; /* controls horizontal position */
-	border-width:20px 0 0 20px; /* vary these values to change the angle of the vertex */
-	border-style:solid;
-	border-color:#075698 transparent; 
-    /* reduce the damage in FF3.0 */
-    display:block; 
-    width:0;
-}
-
-/* Variant : top
------------------------------------------- */
-
-.triangle-right.top:after {
-	top:-20px; /* value = - border-top-width - border-bottom-width */
-	right:50px; /* controls horizontal position */
-	bottom:auto;
-	left:auto;
-	border-width:20px 20px 0 0; /* vary these values to change the angle of the vertex */
-	border-color:transparent #075698; 
-}
-
-/* Variant : left
------------------------------------------- */
-
-.triangle-right.left:after {
-	top:16px; 
-	left:-40px; /* value = - border-left-width - border-right-width */
-	bottom:auto;
-	border-width:15px 40px 0 0; /* vary these values to change the angle of the vertex */
-	border-color:transparent #075698; 
-}
-
-/* Variant : right
------------------------------------------- */
-
-.triangle-right.right:after {
-	top:16px; 
-	right:-40px; /* value = - border-left-width - border-right-width */
-	bottom:auto;
-    left:auto;
-	border-width:15px 0 0 40px; /* vary these values to change the angle of the vertex */
-	border-color:transparent #075698 ; 
-}
-
-
+		#score{
+			left: 800px;
+			top: 150px;
+		}
 
 	</style>
-	
 
 </head>
 
-
-
 <body onload="init();">
 
-	<script src="js/game-starter-kit.js"></script>	
-
+	<script src="js/matrix.js"></script>
+	<script src="js/cssPrefix.js"></script>
+	<script src="js/parallax.js"></script>
+	<script src="js/game-starter-kit.js"></script>
 
 	<script>
 		var fg1;
@@ -316,18 +210,20 @@ button:hover{
 		var maxNPCs = 10;
 		var activeNPCList = [];
 		var spareNPCList = [];
-	
-		function init() {
-		    prepareCSSPrefix();
 
-			initMouseListeners(); 
+		// the body onload calls this to begin
+		// loading and running the game and
+		// shows the start screen.
+		function init() {
+
+			initMouseListeners();
 			initKeyboardListeners();
 
 			// create the background
 			makeParallax();
 
 			// create the ground
-			makeGround();	
+			makeGround();
 
 			// create the player avatar
 			makeAvatar();
@@ -367,16 +263,16 @@ button:hover{
 			//
 			// a standard recurring timer
 			// setInterval(loop, 1000 / targetFramesPerSecond);
-			// 
+			//
 			// a better timer pattern, new emerging standard, though it does't recur, need to call it in the looping function... you'll see this function call again in "loop()"
 			requestAnimationFrame(loop);
 		}
 
-		// ------ heads-up-display / game labels -------			
+		// ------ heads-up-display / game labels -------
 
 		function prepareScore(){
 			var e = document.getElementById("score-group");
-			e.style.position = "absolute"; 
+			e.style.position = "absolute";
 			e.style.bottom = "10px";
 			e.style.right = "10px";
 			e.style.visibility = "hidden";
@@ -385,7 +281,7 @@ button:hover{
 
 		function prepareProgress(){
 			var e = document.getElementById("progress-group");
-			e.style.position = "absolute"; 
+			e.style.position = "absolute";
 			e.style.bottom = "10px";
 			e.style.left = "10px";
 			e.style.visibility = "hidden";
@@ -397,7 +293,7 @@ button:hover{
 			healthTotalValue = avatar.health;
 
 			var e = document.getElementById("health-group");
-			e.style.position = "absolute"; 
+			e.style.position = "absolute";
 			e.style.top = "10px";
 			e.style.left = "10px";
 			e.style.visibility = "hidden";
@@ -409,7 +305,7 @@ button:hover{
 
 		function prepareScreenGameOver(){
 			var e = document.getElementById("screen-game-over");
-			e.style.position = "absolute"; 
+			e.style.position = "absolute";
 			e.style.top = "0px";
 			e.style.left = "0px";
 			// e.style.visibility = "hidden";
@@ -419,7 +315,7 @@ button:hover{
 
 		function prepareScreenTitle(){
 			var e = document.getElementById("screen-title");
-			e.style.position = "absolute"; 
+			e.style.position = "absolute";
 			e.style.top = "0px";
 			e.style.left = "0px";
 			// e.style.visibility = "hidden";
@@ -429,7 +325,7 @@ button:hover{
 
 		function prepareScreenPause(){
 			var e = document.getElementById("screen-pause");
-			e.style.position = "absolute"; 
+			e.style.position = "absolute";
 			e.style.top = "0px";
 			e.style.left = "0px";
 			// e.style.visibility = "hidden";
@@ -439,7 +335,7 @@ button:hover{
 
 		function prepareScreenAbout(){
 			var e = document.getElementById("screen-about");
-			e.style.position = "absolute"; 
+			e.style.position = "absolute";
 			e.style.top = "0px";
 			e.style.left = "0px";
 			// e.style.visibility = "hidden";
@@ -451,31 +347,38 @@ button:hover{
 
 
 		function makeParallax(){
-			bg1 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
-			bg2 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
 
-			fg1 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
-			fg2 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+			//create each parallax layer, then add it to the DOM via the game's DOM container
+			bg1 = parallax.parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
+			container.appendChild(bg1);
+
+			bg2 = parallax.parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
+			container.appendChild(bg2);
+
+			fg1 = parallax.parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+			container.appendChild(fg1);
+
+			fg2 = parallax.parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+			container.appendChild(fg2);
 		}
 
 		function makeGround(){
-			ground.className = "ground"; 
-			ground.id = "ground"; 
-			ground.style.width = SCREEN_WIDTH +"px"; 
-			ground.style.height = "100px"; 
-			ground.style.top = "0px"; 
-			ground.style.left = "0px"; 
-			ground.style.backgroundColor = "#666"; 
-			
+			ground.className = "ground";
+			ground.id = "ground";
+			ground.style.width = SCREEN_WIDTH +"px";
+			ground.style.height = "100px";
+			ground.style.top = "0px";
+			ground.style.left = "0px";
+			ground.style.backgroundColor = "#666";
+
 			//to get accurate readings of dom element positions, they need to pass through this approach: 3d CSS transforms
 			//todo: come up with a way where that can be flexible.
-			ground.style.webkitTransform = "translate3d("+ 0 +"px, " + (gameHeight-100) +"px, "+ 0 +"px)"; 
-			//document.body.appendChild(ground);
+			ground.style[ cssPrefix.cssTransform ] = "translate3d("+ 0 +"px, " + (gameHeight-100) +"px, "+ 0 +"px)";
 			container.appendChild(ground);
 		}
 
 		function showScreenTitle(){
-			gameStarted = false;	
+			gameStarted = false;
 
 			hideGameScreens();
 			hideHUD();
@@ -510,16 +413,18 @@ button:hover{
 			background_sound.addEventListener('ended', function(){
 				this.currentTime = 0;
 			}, false);
-		}		
+		}
 
 		function stopSound(elementId){
 			var background_sound = document.getElementById(elementId);
-			background_sound.pause();			
-			background_sound.currentTime = 0;			
+			if(background_sound && background_sound.pause && background_sound.currentTime){
+				background_sound.pause();
+				background_sound.currentTime = 0;
+			}
 		}
 
 		function showScreenPause(){
-			gameStarted = true;	
+			gameStarted = true;
 			gamePaused = true;
 
 			hideGameScreens();
@@ -531,11 +436,11 @@ button:hover{
 			e.style.display = "block";
 			e.style.visibility = "visible";
 			e.style.top = container.style.top;
-			e.style.left = container.style.left;				
-		}			
+			e.style.left = container.style.left;
+		}
 
 		function showScreenAbout(){
-			gameStarted = false;	
+			gameStarted = false;
 			gamePaused = false;
 
 			hideGameScreens();
@@ -549,11 +454,11 @@ button:hover{
 			e.style.top = container.style.top;
 			e.style.left = container.style.left;
 
-			showStudentsAndPoints();
+			showHighScoreBoard();
 		}
 
 		function showScreenGameOver(){
-			gameStarted = true;	
+			gameStarted = true;
 			gamePaused = false;
 			gameOver = true;
 
@@ -664,25 +569,29 @@ button:hover{
 		// ------ characters -------
 
 		function makeAvatar(){
-			avatar = new Character("image/actor/ninja.png", 170, 222, .5); 
+			avatar = new Character("image/actor/ninja.png", 170, 222, .5);
 			avatar.targetY = 120;
 
-			//breathing effect
+			//breathing effect options
 			avatar.scaleMax = 1.1;
 			avatar.scaleMin = .97;
 			avatar.scaleIncrement = .0025;
 
+			//wobble effect options
+			avatar.rotate = 5;
+			avatar.rotateMax = 5;
+			avatar.rotateDirection = 1;
+
 			container.appendChild(avatar.domElement);
 			avatar.emitter = new Emitter(container);
-
-		}		
+		}
 
 		function removeAllBaddies(){
 			var i = activeNPCList.length;
 			while (i--) {
 				var currentBaddie = activeNPCList[i];
 				activeNPCList.remove(activeNPCList.indexOfContains(currentBaddie));
-				container.removeChild(currentBaddie.domElement); 
+				container.removeChild(currentBaddie.domElement);
 				spareNPCList.push(currentBaddie);
 			}
 		}
@@ -720,7 +629,7 @@ button:hover{
 				if(gameStarted && !gamePaused && !gameOver){
 
 					// ---------------------------------
-					// the game ticks forward... 
+					// the game ticks forward...
 
 
 					// ---------------------------------
@@ -766,7 +675,7 @@ button:hover{
 							if(currentBaddie.health < 0){
 								activeNPCList.remove(activeNPCList.indexOfContains(currentBaddie));
 								emitter.makeExplosion(currentBaddie.x, currentBaddie.y, 10);
-								container.removeChild(currentBaddie.domElement); 
+								container.removeChild(currentBaddie.domElement);
 								spareNPCList.push(currentBaddie);
 							}
 
@@ -783,12 +692,12 @@ button:hover{
 					//update health display
 					health();
 
-					// then update all the particles. 
+					// then update all the particles.
 					emitter.update();
 
 					// update / move the parallax background
-					horizontalParallax(bg1, bg2, -1, 10, .5);
-					horizontalParallax(fg1, fg2, -1, 10, 1);
+					parallax.horizontalParallax(bg1, bg2, -1, 10, .5);
+					parallax.horizontalParallax(fg1, fg2, -1, 10, 1);
 
 
 					// update the avatar
@@ -802,7 +711,7 @@ button:hover{
 
 
 					// ---------------------------------
-					// store the current time as latest game tick time						
+					// store the current time as latest game tick time
 					previousGameTickTime = currentLoopTime;
 
 				}else if(!gameOver && gamePaused && gameStarted){
@@ -814,11 +723,11 @@ button:hover{
 					// game tick is useful to update the non-game screens
 
 					// show a slower parallax on the non-game screens
-					horizontalParallax(bg1, bg2, 1, 1, .5);
-					horizontalParallax(fg1, fg2, 1, 1, 1);
+					parallax.horizontalParallax(bg1, bg2, 1, 1, .5);
+					parallax.horizontalParallax(fg1, fg2, 1, 1, 1);
 
 					// have the avatar hang out on the non-game screens too
-					var groundPosition = getPosition(ground);						
+					var groundPosition = getPosition(ground);
 
 					switch(activeScreen){
 						case SCREEN_TITLE:
@@ -860,19 +769,19 @@ button:hover{
 				if (nearAvatar < 20){
 					npc.jumping = true;
 				}
-				
+
 				// follow avatar
 				if (avatar.x < npc.x){
 					npc.targetX = npc.x - 5;
 				}else if (avatar.x > npc.x){
 					npc.targetX = npc.x + 5;
-				}						
-			}		
+				}
+			}
 		}
 
 		function moveToGround(character){
 		    character.status = 2;
-				    
+
             var groundPosition = getPosition(ground);
             var characterPosition = getPosition(character.domElement);
             var characterSize = getSize(character.domElement);
@@ -882,14 +791,20 @@ button:hover{
             var characterActualPositionY = Math.floor(characterPosition[1]);
 
             character.targetY = characterGroundPositionY;
-            character.targetX = characterPosition[0] + characterSize[0]/2;				
+            character.targetX = characterPosition[0] + characterSize[0]/2;
 		}
 
 		function makeNPC(){
+
+			// npc is short for "non-player character" (D&D nerd term).
 			var npc;
+
+			// advanced but critical to keeping the game running smoothly
+			// this if-else block looks to find an unused NPC element
+			// it reuses NPC elements when it can
 			if(spareNPCList.length>0) {
 				// if one is already in the spare array, recycle it
-				npc = spareNPCList.pop(); 	
+				npc = spareNPCList.pop();
 
 				// this seems to fix a bug where reused npc's appear near the center of the screen (likely where they were squished)
 				npc.x = -500;
@@ -901,21 +816,29 @@ button:hover{
 			} else {
 				// otherwise make a new one
 				var randomHW = randomRange(16,100);
- 				npc = new Character("image/actor/tomato.png", randomHW, randomHW); 
+
+				// the Character function/object is in the file "game-starter-kit.js"
+ 				npc = new Character("image/actor/tomato.png", randomHW, randomHW);
 			}
 
+			// set all the attributes/properties of the NPC
+			// for position, animation, etc.
+			// breathing effect settings
 			npc.scaleMax = 1.2;
 			npc.scaleMin = .97;
+			// wobble and rotate settings
 			npc.wobble = true;
 			npc.rotate = randomRange(5,20);
 			npc.rotateMax = randomRange(5,20);
+			// movement speed settings
 			npc.velX = randomRange(-15,15);
 			npc.velY = randomRange(-15,15);
+			// additional settings
 			npc.size = randomRange(0.5,1);
 			npc.health = 100;
 			npc.fullStop = false;
 
- 			npc.prepare();	
+ 			npc.prepare();
 
 			npc.x = randomRange(-15, 15);
  			npc.targetX = gameWidth-100;
@@ -926,9 +849,10 @@ button:hover{
 			npc.emitter = new Emitter(container);
 
 
+			// add this new one to the overall non player character list
 			activeNPCList.push(npc);
 		}
-		
+
 		function initMouseListeners() {
 			document.addEventListener('mousemove', onMouseMove, false);
 			document.addEventListener( 'mousedown', onMouseDown, false );
@@ -942,18 +866,18 @@ button:hover{
 		}
 
 		function onMouseDown(event) {
-			mouseDown = true; 
+			mouseDown = true;
 			// moveAvatarMouse(event.clientX - container.dataset.x, event.clientY - container.dataset.y);
 		}
 
 		function onMouseUp(event) {
-			mouseDown = false; 
+			mouseDown = false;
 		}
 
 		function moveAvatarMouse(x,y){
 			avatar.targetX = x;
 			avatar.targetY = y;
-		}			
+		}
 
 		function moveAvatarKeyboard(xDistance,yDistance){
 			if(xDistance !== 0){
@@ -962,44 +886,11 @@ button:hover{
 			if(yDistance !== 0){
 				avatar.targetY = avatar.y + yDistance;
 			}
-			
+
 	        //console.log("moving status... " + avatar.xDirection + ";" + avatar.yDirection + ";" + avatar.zDirection);
-			
-		}
-
-		function wordBalloon(speaker, text){
-			//var balloon = document.createElement("<p class='triangle-right'>" + text + "</p>");
-
-
-			var balloon = document.createElement("div");
-			balloon.className = "triangle-right"; 
-			balloon.style.width = "200px"; 
-
-			balloon.textContent = text;
-
-			// balloon.style.height = gameHeight+"px"; 
-			// balloon.dataset.width = gameWidth;
-			// balloon.dataset.height = gameHeight;
-			// balloon.dataset.x = Math.floor((SCREEN_WIDTH - gameWidth)/2);
-			// balloon.dataset.y = Math.floor((SCREEN_HEIGHT - gameHeight)/2);
-			// balloon.dataset.y = (balloon.dataset.y > 0) ? balloon.dataset.y : 0;
-
-			// balloon.style.top = (speaker.y - speaker.height) + "px";
-			// balloon.style.left = (speaker.x + container.dataset.x) + "px"; 
-
-
-			balloon.style.top = (speaker.y - speaker.height) + "px";
-			balloon.style.left = speaker.x + "px"; 
-
-			container.appendChild(balloon);
-			
-			// document.body.appendChild(balloon);
-
-			// balloon.style.top = speaker.y + speaker.height;
-			// balloon.style.left = speaker.x;
 
 		}
-		
+
 		// input - keyboard
 		var keysInUse = [];
 		function initKeyboardListeners() {
@@ -1020,7 +911,7 @@ button:hover{
 				keysInUse.remove(i);
 			}
 		}
-		
+
 		var LEFT = 37;
 		var UP = 38;
 		var RIGHT = 39;
@@ -1053,13 +944,13 @@ button:hover{
 			if(keysInUse.contains(SPACE)){
 				avatar.jumping = true;
 			}
-			
+
 			if(keysInUse.contains(_P)){
 				pauseGame();
 			}
 
 			// todo:
-			// this introduces a bug... rapid pause/unpause 
+			// this introduces a bug... rapid pause/unpause
 			// if(keysInUse.contains(ESC)){
 			// 	pauseGame();
 			// }
@@ -1186,7 +1077,8 @@ button:hover{
 			document.getElementById("health-label").textContent = amount + " of " + healthTotalValue;
 		}
 
-		var studentsInitialsAndPoints = [
+		// high score board default names
+		var highScoreInitialsAndPoints = [
 			"rob:105",
 			"rad:104",
 			"hey:103",
@@ -1194,10 +1086,10 @@ button:hover{
 			"zzz:101",
 		];
 
-		function showStudentsAndPoints(){
-			document.getElementById("great-job").innerHTML = "<li>Great Job! These students, designed, built, and played their way to making this game!!!</li>";
-			for(var i=0; i<studentsInitialsAndPoints.length; i++){
-				document.getElementById("great-job").innerHTML += "<li class='student-score'>" + studentsInitialsAndPoints[i] + "</li>";
+		function showHighScoreBoard(){
+			document.getElementById("great-job").innerHTML = "<li>Great Job!!!</li>";
+			for(var i=0; i<highScoreInitialsAndPoints.length; i++){
+				document.getElementById("great-job").innerHTML += "<li class='student-score'>" + highScoreInitialsAndPoints[i] + "</li>";
 			}
 		}
 
@@ -1223,7 +1115,7 @@ button:hover{
 			<li><button id="button-unpause" onclick="unPauseGame()">un-pause</button></li>
 			<li><button id="button-quit" onclick="quitGame()">quit</button></li>
 		</ul>
-	</div>		
+	</div>
 
 	<div id="screen-game-over" class="screen">
 		<ul id="title">
@@ -1249,7 +1141,7 @@ button:hover{
 		</ul>
 		<ul id="info">
 			<li><button id="button-back" onclick="showScreenTitle()">back</button></li>
-		</ul>	
+		</ul>
 	</div>
 
 	<div id="score-group" class="game-label">
@@ -1282,7 +1174,6 @@ button:hover{
 	<audio controls id="sfx-hit-avatar" class="game-sound">
 		<source src="sound/effect/Hit_Hurt7.mp3"/>
 	</audio>
-
 
 </body>
 </html>

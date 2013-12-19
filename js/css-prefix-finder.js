@@ -1,4 +1,16 @@
-// css prefix finder
+// ---------------------------------------------
+//  css prefix finder
+//
+//  Some features in CSS require us to use them
+//  in a browser-specific way via a prefix for
+//  the given feature.
+//
+//  This code helps us find out which previx we
+//  need to use for the current browser.
+//
+//  Mostly - this is to have our game use a very
+//  powerful CSS feature called CSS3 Transforms.
+// ---------------------------------------------
 
 var domPrefixes = "Webkit Moz O ms Khtml".split(" ");
 var animation = false;
@@ -10,13 +22,14 @@ var transitionstring = "transition";
 var keyframeprefix = "";
 var pfx = "";
 
+
 function prepareCSSPrefix(){
 
 	var e = document.body;
 
-	if( e.style.animationName ) { animation = true; }    
-	if( e.style.transform ) { transformation = true; }    
-	if( e.style.transition ) { transition = true; }    
+	if( e.style.animationName ) { animation = true; }
+	if( e.style.transform ) { transformation = true; }
+	if( e.style.transition ) { transition = true; }
 
 	if( animation === false ) {
 		for( var i = 0; i < domPrefixes.length; i++ ) {
@@ -50,6 +63,6 @@ function prepareCSSPrefix(){
 		    break;
 		  }
 		}
-	}	
+	}
 
 }

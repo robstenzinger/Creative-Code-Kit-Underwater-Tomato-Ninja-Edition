@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>character Scrolling Refined</title>
+<title>Animation - Breathe</title>
 
-<script src="js/css-prefix-finder.js"></script>
-
+<script src="js/cssPrefix.js"></script>
 <script type="text/javascript">
 
+// update happens on every "heartbeat" or "tick" of the animation
 function update(){
-	
 
 	if(character1.scale >= character1.scaleMax){
 		character1.scaleDirection = character1.scaleDirection * -1;
@@ -20,7 +19,7 @@ function update(){
 		character1.scale = character1.scale + (character1.scaleIncrement * character1.scaleDirection);
 	}
 
-	character1.style[ transformstring ] = "scale("+character1.scale+")";
+	character1.style[ cssPrefix.cssTransform ] = "scale("+character1.scale+")";
 
 }
 
@@ -40,7 +39,7 @@ function characterLayer(imageURL, width, height, x, y, className){
 	character.dataset.x = x;
 	character.dataset.y = y;
 	character.dataset.width = width;
-	character.dataset.height = height;	
+	character.dataset.height = height;
 
 	character.className = (className) ? className : "";
 	character.style.background = "url(" + imageURL + ")";
@@ -49,20 +48,27 @@ function characterLayer(imageURL, width, height, x, y, className){
 	character.style.backgroundSize = width + "px " + height + "px";
 	character.style.position = "absolute";
 	character.style.display = "block";
-	character.style[transformstring + "Origin"] = "0px 0px";
+
+	// the tranform's ORIGIN can affect the way the animation behaves
+	// play with the settings to see what happens!
+	// for example, try:
+	// 0px 0px
+	character.style[cssPrefix.cssTransform + "Origin"] = "29px 59px";
 
 	document.body.appendChild(character);
 	return character;
 }
 
+// the animated character
 var character1;
 
+// runs once, when the document is loaded
 function prepareExample() {
 
-    prepareCSSPrefix();
-    
+    // create the character
 	character1 = characterLayer("image/actor/puppy.png", 160, 225, 0, 0, "");
 
+	// this timer establishes the "heartbeat" or "tick" of the animation
 	setInterval(update, 1000 / 30);
 }
 

@@ -1,19 +1,19 @@
 <html>
 <head>
 <title>CSS Transform Playground</title>
-<!-- 
+<!--
 
 This example is inspired from the 3D CSS Playground at:
 http://css3.bradshawenterprises.com/all/#how2transforms
 
 -->
 <script src="js/jquery-1.7.2.min.js"></script>
-<script src="js/css-prefix-finder.js"></script>
+<script src="js/cssPrefix.js"></script>
 
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Crete+Round|Luckiest+Guy|Ceviche+One">
 
 <link rel="stylesheet" type="text/css" href="css/style.css">
-	
+
 <style>
 
 #css-transform-playground, #css-history{
@@ -51,11 +51,6 @@ fieldset ul li {
 	clear:both;
 }
 
-/*#css-transform-settings{
-	height:200px;
-	overflow: scroll;
-}*/
-
 #clear {
 	background-color: #981a1a;
 	color: #fac9c9;
@@ -74,7 +69,7 @@ fieldset ul li {
 	background-color: #418812;
 	color: #ffffff;
 	border-style: solid;
-	border-color: #e6d5d5;	
+	border-color: #e6d5d5;
 	width: 200px;
 	height: 30px;
 }
@@ -101,19 +96,15 @@ function changePreviewImage(){
 function updatePreviewCSS(){
 	var scale = $("#scale").val()/100;
 	var transformCSS = "scale(" + scale + ") translateX(" + $("#translate-x").val() + "px) translateY(" + $("#translate-y").val() + "px) translateZ(" + $("#translate-z").val() + "px) rotateX(" + $("#rotate-x").val() + "deg) rotateY(" + $("#rotate-y").val() + "deg) rotateZ(" + $("#rotate-z").val() + "deg)";
-	//var additionalCSS = "transform-origin-x"
-	//var viewerCSS = "";
 
-	//console.log(transformCSS);
-
-	$(".current-preview").css(transformstring, transformCSS);
-	$("#preview").css(keyframeprefix + "perspective", $("#perspective").val());
-	$(".current-preview").css(keyframeprefix + "transform-origin-x", $("#transform-origin-x").val() + "%");
-	$(".current-preview").css(keyframeprefix + "transform-origin-y", $("#transform-origin-y").val() + "%");
+	$(".current-preview").css(cssPrefix.cssTransform, transformCSS);
+	$("#preview").css(cssPrefix.cssKeyframe + "perspective", $("#perspective").val());
+	$(".current-preview").css(cssPrefix.cssKeyframe + "transform-origin-x", $("#transform-origin-x").val() + "%");
+	$(".current-preview").css(cssPrefix.cssKeyframe + "transform-origin-y", $("#transform-origin-y").val() + "%");
 
 	console.log("Image CSS:");
 	console.log($(".current-preview").attr("style"));
-	console.log("container CSS:");	
+	console.log("container CSS:");
 	console.log($("#preview").attr("style"));
 
 	$("#css-history").html("<p>" + "Image CSS:<br>" + $(".current-preview").attr("style") + "</p><p>" + "Container CSS:<br>" + $("#preview").attr("style") + "</p>");
@@ -152,17 +143,14 @@ $(function(){
 	$("#change-preview-image").click(function(event){
 		event.preventDefault();
 		changePreviewImage();
-	});	
+	});
 
 	$("#css-transform-settings input").change(function(){
 		updatePreviewCSS();
 	});
 
 	// begin
-	prepareCSSPrefix();
 	addPreviewImage();
-
-
 
 	// an exercise for the future... add multiple transform instances w/a preview of each
 	// meanwhile, hide this:
@@ -195,7 +183,7 @@ $(function(){
 							<input id="scale" name="scale" type="range" min="1" max="200" default="100" />
 						</li>
 					</ul>
-				</fieldset>				
+				</fieldset>
 				<fieldset>
 				<legend>Translate</legend>
 					<ul>
@@ -211,7 +199,7 @@ $(function(){
 							<label id="translate-z-label" for="translate-z">Z</label>
 							<input id="translate-z" name="translate-z" type="range" min="-50" max="50" default="0" />
 						</li>
-					</ul>			
+					</ul>
 				</fieldset>
 				<fieldset>
 				<legend>Rotate</legend>
@@ -228,7 +216,7 @@ $(function(){
 							<label id="rotate-z-label" for="rotate-z">Z</label>
 							<input id="rotate-z" name="rotate-z" type="range" min="-180" max="180" default="0" />
 						</li>
-					</ul>			
+					</ul>
 				</fieldset>
 				<fieldset>
 				<legend>Origin and Perspective</legend>
@@ -241,7 +229,7 @@ $(function(){
 							<label id="transform-origin-y-label" for="transform-origin-y">Transform Origin Y Percent</label>
 							<input id="transform-origin-y" name="transform-origin-y" type="range" min="0" max="100" default="50" />
 						</li>
-<!-- 
+<!--
 						<li>
 							<label id="transform-origin-x-label" for="transform-origin-x">Transform Origin X Pixels</label>
 							<input id="transform-origin-x" name="transform-origin-x" type="range" min="0" max="1000" default="0" />
@@ -255,9 +243,9 @@ $(function(){
 							<label id="perspective-label" for="perspective">Perspective</label>
 							<input id="perspective" name="perspective" type="range" min="200" max="1500" default="600" />
 						</li>
-					</ul>			
+					</ul>
 				</fieldset>
-		</fieldset>	
+		</fieldset>
 		</div>
 		<fieldset>
 			<!-- <button id="save">Save This Tranformation</button> -->
@@ -278,7 +266,7 @@ $(function(){
 			</ul>
 		</fieldset>
 		</form>
-	</div>	
+	</div>
 	<div id="css-history">
 	</div>
 	</div>

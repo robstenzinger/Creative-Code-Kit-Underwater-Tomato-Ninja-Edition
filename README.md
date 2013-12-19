@@ -1,5 +1,5 @@
-HTML5-Game-Dev-Workshop
+Game Construction Kit: Underwater Tomato Ninja Edition
 =======================
 
-Resources for my HTML5 Game Dev Workshop: Code, Art, Sound, Examples and the game Underwater Tomato Ninja
+This project is comprised of Code, Art, Sound, Examples and the game Underwater Tomato Ninja to support the book Game Construction Kit: Underwater Tomato Ninja Edition.
 

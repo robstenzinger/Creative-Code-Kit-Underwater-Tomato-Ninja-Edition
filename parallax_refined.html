@@ -3,17 +3,17 @@
 <head>
 <title>Parallax Scrolling Refined</title>
 
+<script src="js/cssPrefix.js"></script>
 <script src="js/parallax.js"></script>
-<script src="js/css-prefix-finder.js"></script>
 
 <script type="text/javascript">
 
 function update(){
-	horizontalParallax(bg1, bg2, -1, 10, .5);
-	horizontalParallax(fg1, fg2, -1, 10, 1);
+	parallax.horizontalParallax(bg1, bg2, -1, 10, .5);
+	parallax.horizontalParallax(fg1, fg2, -1, 10, 1);
 
-	// verticalParallax(bg1, bg2, 1, 5, .25);
-	// verticalParallax(fg1, fg2, 1, 5, 1);
+	// parallax.verticalParallax(bg1, bg2, 1, 5, .25);
+	// parallax.verticalParallax(fg1, fg2, 1, 5, 1);
 }
 
 var fg1;
@@ -23,13 +23,17 @@ var bg2;
 
 function prepareExample() {
 
-    prepareCSSPrefix();
-    
-	bg1 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
-	bg2 = parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
+	// create each layer, then add the layer to the DOM
 
-	fg1 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
-	fg2 = parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+	bg1 = parallax.parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
+	document.body.appendChild(bg1);
+	bg2 = parallax.parallaxLayer("image/background/water-back.png", 640, 480, 0, 0, "");
+	document.body.appendChild(bg2);
+
+	fg1 = parallax.parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+	document.body.appendChild(fg1);
+	fg2 = parallax.parallaxLayer("image/background/water-front.png", 640, 480, 0, 0, "");
+	document.body.appendChild(fg2);
 
 	setInterval(update, 1000 / 30);
 }
