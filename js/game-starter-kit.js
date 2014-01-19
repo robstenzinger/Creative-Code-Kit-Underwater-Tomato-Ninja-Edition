@@ -357,10 +357,7 @@ based on the DOMParticle pattern by Seb Lee-Delisle, sebleedelisle.com
 */
 function Character(imgPath, w, h, scale){
 
-
-
 	var domElement = this.domElement = document.createElement('div');
-
 
 	this.domElement.id = "avatar";
 	this.domElement.style.background = 'url('+imgPath+') transparent';
@@ -512,8 +509,8 @@ function Character(imgPath, w, h, scale){
 
 				// position of avatar "on the ground"
 				var avatarGroundPositionY = Math.floor(groundPosition[1] - avatarSize[1]);
-				var avatarActualPositionY = Math.floor(avatarPosition[1]);// - avatarSize[1];
-				var avatarActualPositionX = Math.floor(avatarPosition[0]);// - avatarSize[1];
+				var avatarActualPositionY = Math.floor(avatarPosition[1]);
+				var avatarActualPositionX = Math.floor(avatarPosition[0]);
 
 				// bounce or hop the avatar
 				if(avatarGroundPositionY == avatarActualPositionY){
@@ -534,7 +531,7 @@ function Character(imgPath, w, h, scale){
 			var avatarSize = getSize(this.domElement);
 
 			// position of avatar "on the ground"
-			var avatarActualPositionY = Math.floor(avatarPosition[1]);// - avatarSize[1];
+			var avatarActualPositionY = Math.floor(avatarPosition[1]);
 
 			//starting jump
 			this.status = 1;
@@ -573,7 +570,7 @@ function Character(imgPath, w, h, scale){
 
 				// position of avatar "closer the ground"
 				var avatarGroundPositionY = Math.floor(groundPosition[1] - avatarSize[1]);
-				var avatarActualPositionY = Math.floor(avatarPosition[1]);// - avatarSize[1];
+				var avatarActualPositionY = Math.floor(avatarPosition[1]);
 
 				this.targetY = avatarGroundPositionY; //avatarActualPositionY + (-1 * (avatarSize[1]*3));
 
@@ -597,7 +594,7 @@ function Character(imgPath, w, h, scale){
 
 		    // position of avatar "closer the ground"
 		    var avatarGroundPositionY = Math.floor(groundPosition[1] - avatarSize[1]);
-		    var avatarActualPositionY = Math.floor(avatarPosition[1]);// - avatarSize[1];
+		    var avatarActualPositionY = Math.floor(avatarPosition[1]);
 
 		    this.yVel = .25;
 		    this.drag = .10;
